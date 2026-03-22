@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Geo Analytics Dashboard</title>
+  <link rel="preconnect" href="https://unpkg.com" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div>
+      <h1>Marketplace Geo Analytics Dashboard</h1>
+      <p>Static web app for GitHub + Cloudflare Pages. Upload a fresh CSV any time to recompute zone scores, next-500 plan, and GMV forecasts.</p>
+    </div>
+    <div class="topbar-actions">
+      <label class="upload-btn">
+        <input type="file" id="csvUpload" accept=".csv" />
+        Upload new CSV
+      </label>
+      <button id="loadSampleBtn">Load bundled sample data</button>
+    </div>
+  </header>
+
+  <section class="controls card">
+    <div class="controls-grid">
+      <div>
+        <label>Data source</label>
+        <div id="sourceLabel" class="muted">Bundled sample dataset</div>
+      </div>
+      <div>
+        <label>Rows loaded</label>
+        <div id="rowsLoaded">0</div>
+      </div>
+      <div>
+        <label>Outliers excluded</label>
+        <div id="rowsExcluded">0</div>
+      </div>
+      <div>
+        <label>Download outputs</label>
+        <div class="download-actions">
+          <button id="downloadZoneBtn">Zone scores CSV</button>
+          <button id="downloadNext500Btn">Next 500 CSV</button>
+        </div>
+      </div>
+    </div>
+    <details class="config-panel">
+      <summary>Editable model assumptions</summary>
+      <div class="config-grid" id="configGrid"></div>
+      <div class="config-actions">
+        <button id="resetConfigBtn">Reset defaults</button>
+        <button id="rerunBtn">Re-run model</button>
+      </div>
+    </details>
+  </section>
+
+  <section class="metrics-grid">
+    <div class="metric card"><span>Total mapped merchants</span><strong id="metricMerchants">-</strong></div>
+    <div class="metric card"><span>Zones covered</span><strong id="metricZones">-</strong></div>
+    <div class="metric card"><span>Top scoring zone</span><strong id="metricTopZone">-</strong></div>
+    <div class="metric card"><span>Current monthly GMV</span><strong id="metricCurrentGMV">-</strong></div>
+    <div class="metric card"><span>Post-plan monthly GMV</span><strong id="metricPostGMV">-</strong></div>
+    <div class="metric card"><span>Incremental monthly GMV</span><strong id="metricIncrementalGMV">-</strong></div>
+  </section>
+
+  <main class="layout-grid">
+    <section class="card span-2">
+      <div class="section-head">
+        <h2>Merchant map</h2>
+        <div class="legend" id="categoryLegend"></div>
+      </div>
+      <div id="map"></div>
+    </section>
+
+    <section class="card">
+      <div class="section-head">
+        <h2>Operational insight highlights</h2>
+      </div>
+      <div id="insights" class="insights"></div>
+    </section>
+
+    <section class="card span-2">
+      <div class="section-head">
+        <h2>Zone summary and scoring</h2>
+      </div>
+      <div class="table-wrap">
+        <table id="zoneTable">
+          <thead></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="card">
+      <div class="section-head">
+        <h2>Category saturation matrix</h2>
+      </div>
+      <div id="categoryMatrix" class="matrix"></div>
+    </section>
+
+    <section class="card span-3">
+      <div class="section-head">
+        <h2>Next 500 merchant onboarding plan</h2>
+        <div class="table-tools">
+          <input id="next500Search" type="search" placeholder="Filter by zone or category" />
+        </div>
+      </div>
+      <div class="table-wrap tall">
+        <table id="next500Table">
+          <thead></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>Expected CSV columns: <code>Name</code>, <code>Category</code>, <code>Latitude</code>, <code>Longitude</code>. You can update the zone rules and category assumptions directly in <code>app.js</code>.</p>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+  <script src="app.js"></script>
+</body>
+</html>
