@@ -1,4 +1,4 @@
-# Marketplace Geo Analytics Dashboard
+# Telecel Marketplace Geo Analytics Dashboard
 
 Static web dashboard for merchants geographic analytics.
 
